@@ -12,6 +12,7 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./server/db-init.sql:/docker-entrypoint-intitdb.d/db-init.sql
   
   server:
     build: ./server
@@ -37,5 +38,7 @@ services:
       - server
     ports:
       - "3000:3000"
+    
+
 volumes:
   db_data:
