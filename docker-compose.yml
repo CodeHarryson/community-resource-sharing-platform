@@ -1,0 +1,41 @@
+version: "3.9"
+services: 
+  db:
+    image: postgres:15
+    container_name: resource_db
+    restart: always
+    environment:
+      POSTGRES_USER:  postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: resource_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  
+  server:
+    build: ./server
+    container_name: resource_server
+    restart: always
+    depends_on:
+      - db
+    ports: 
+      - "5000:5000"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: resource_db
+      JWT_SECRET: supersecretjwt
+  
+  client:
+    build: ./client
+    container_name: resource_client
+    restart: always
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+volumes:
+  db_data:
