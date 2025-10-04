@@ -4,16 +4,16 @@ services:
   # PostgreSQL Database Service
   db: 
     image: postgres:14-alpine
-    container_name: marketplace_db # Corrected typo
+    container_name: marketplace_db
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-DBSECRETPASSWORD}
       POSTGRES_DB: ${DB_DATABASE:-resources_db}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - - ./server/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports: 
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./server/init.sql:/docker-entrypoint-initdb.d/init.sql
   
   # Backend Server Service
   server: 
