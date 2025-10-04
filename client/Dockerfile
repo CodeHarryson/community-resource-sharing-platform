@@ -1,24 +1,15 @@
-# Stage 1: Build React App
-FROM node:18 AS build
-WORKDIR /app
-
-# Install build tools
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip build-essential git bash && \
-    rm -rf /var/lib/apt/lists/*
-
+#stage 1
+FROM node:18-alpine AS build
+WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
-
+RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve with Nginx
+#stage 2
 FROM nginx:stable-alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=build /app/build ./
-EXPOSE 3000
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 

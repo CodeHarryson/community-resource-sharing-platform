@@ -1,44 +1,42 @@
 version: "3.9"
-services: 
-  db:
-    image: postgres:15
-    container_name: resource_db
-    restart: always
+
+services:
+  db: 
+    image: postgres:14-alpine
+    container_name: martketplace_db
     environment:
-      POSTGRES_USER:  postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: resource_db
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-DBSECRETPASSWORD}
+      POSTGRES_DB: ${DB_DATABASE:-resources_db}
     volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./server/db-init.sql:/docker-entrypoint-intitdb.d/db-init.sql
+      - postgres_data:/var/lib/postgres/data
+    ports: 
+      - "5432:5432"
   
-  server:
+  server: 
     build: ./server
-    container_name: resource_server
-    restart: always
+    container_name: martketplace_server
     depends_on:
       - db
-    ports: 
+    ports:
       - "5000:5000"
     environment:
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: resource_db
-      JWT_SECRET: supersecretjwt
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-DBSECRETPASSWORD}
+      - DB_HOST-db
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_DATABASE=${DB_DATABASE:-resources_db}
+      - JWT_SECRET=${JWT_SECRET:-DBSECRETPASSWORD}
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
   
   client:
     build: ./client
-    container_name: resource_client
-    restart: always
-    depends_on:
-      - server
+    container_name: martketplace_client
     ports:
-      - "3000:3000"
-    
-
+      - "3000:80"
+    volumes:
+      - ./client/src:/usr/src/app/src
 volumes:
-  db_data:
+  postgres_data:
