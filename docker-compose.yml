@@ -1,21 +1,24 @@
-version: "3.9"
+version: "3.8"
 
 services:
+  # PostgreSQL Database Service
   db: 
     image: postgres:14-alpine
-    container_name: martketplace_db
+    container_name: marketplace_db # Corrected typo
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-DBSECRETPASSWORD}
       POSTGRES_DB: ${DB_DATABASE:-resources_db}
     volumes:
-      - postgres_data:/var/lib/postgres/data
+      - postgres_data:/var/lib/postgresql/data
+      - - ./server/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports: 
       - "5432:5432"
   
+  # Backend Server Service
   server: 
     build: ./server
-    container_name: martketplace_server
+    container_name: marketplace_server # Corrected typo
     depends_on:
       - db
     ports:
@@ -23,7 +26,8 @@ services:
     environment:
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-DBSECRETPASSWORD}
-      - DB_HOST-db
+      # This is the corrected line:
+      - DB_HOST=db 
       - DB_PORT=${DB_PORT:-5432}
       - DB_DATABASE=${DB_DATABASE:-resources_db}
       - JWT_SECRET=${JWT_SECRET:-DBSECRETPASSWORD}
@@ -31,12 +35,14 @@ services:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
   
+  # Frontend Client Service
   client:
     build: ./client
-    container_name: martketplace_client
+    container_name: marketplace_client # Corrected typo
     ports:
       - "3000:80"
     volumes:
       - ./client/src:/usr/src/app/src
+
 volumes:
   postgres_data:

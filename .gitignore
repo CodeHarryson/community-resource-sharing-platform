@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+/server/node_modules
+/client/node_modules
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Production/Build outputs
+/build
+/dist
+.next/
+out/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Caches
+.cache/
+.parcel-cache/
+.svelte-kit/
+.docusaurus/
