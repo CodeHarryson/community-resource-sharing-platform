@@ -5,9 +5,9 @@ import { pool } from '../db.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const router = express.router();
+const router = express.Router();
 
-// POST /API/AUTH/REGISTER
+// POST /api/auth/register
 router.post('/register', async (req, res) =>{
     try {
         const {name, email, password} = req.body;
@@ -31,13 +31,13 @@ router.post('/login', async (req, res) => {
         const { email, password} = req.body;
         const userQ = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (!userQ.rows.length) {
-            return res.status(400).json({message: 'Invalid credintials' });
+            return res.status(400).json({message: 'Invalid credentials' });
         }
         
         const user = userQ.rows[0];
         const match = await bcrypt.compare(password, user.password);
         if (!match){
-            return res.status(400).json({ message: 'Invalid credintials '});
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
         
         const token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET);

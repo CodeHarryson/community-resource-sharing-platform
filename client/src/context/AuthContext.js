@@ -1,4 +1,4 @@
-import React, {createContext, useState, useContext, useEffect, Children } from "react";
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import API from '../api';
 
 const AuthContext = createContext(null);
@@ -14,14 +14,15 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    const login = async (ElementInternals, password) => {
-        const { data } = await API.post('/auth/login', {email, password });
+    const login = async (email, password) => {
+        const { data } = await API.post('/auth/login', { email, password });
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         setToken(data.token);
         setUser(data.user);
     };
-
+    
+    // This is the function with the correction
     const register = async (name, email, password) => {
         const { data } = await API.post('/auth/register', { name, email, password });
         localStorage.setItem('token', data.token);
