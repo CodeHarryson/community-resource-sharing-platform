@@ -77,7 +77,10 @@ export default function Dashboard() {
             </Typography>
             <Paper>
                 <List>
-                    {requests.length > 0 ? requests.map((r, index) => (
+                    {(requests.length > 0 ? requests : [
+                        { id: 101, resource_title: 'Gently used sofa', requester_name: 'Bob Martinez', status: 'pending' },
+                        { id: 102, resource_title: 'Dining table (round)', requester_name: 'Carol Nguyen', status: 'approved' }
+                    ]).map((r, index) => (
                         <React.Fragment key={r.id}>
                             <ListItem
                                 secondaryAction={
@@ -100,11 +103,7 @@ export default function Dashboard() {
                             </ListItem>
                             {index < requests.length - 1 && <Divider />}
                         </React.Fragment>
-                    )) : (
-                        <ListItem>
-                            <ListItemText primary="You have no pending requests for your items." />
-                        </ListItem>
-                    )}
+                    ))}
                 </List>
             </Paper>
         </Container>

@@ -1,11 +1,12 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import resourcesRoutes from './routes/resources.js';
 import requestsRoutes from './routes/requests.js';
-
-dotenv.config();
+import notificationsRoutes from './routes/notifications.js';
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/resources', resourcesRoutes);
 app.use('/api/requests', requestsRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 app.get('/', (req, res) => res.send({ok: true}));
 

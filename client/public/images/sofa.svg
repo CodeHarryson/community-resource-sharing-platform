@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
+  <rect width="100%" height="100%" fill="#f5f5f5" />
+  <rect x="20" y="80" width="360" height="80" rx="12" fill="#c7c7c7" />
+  <rect x="40" y="40" width="320" height="60" rx="12" fill="#d9d9d9" />
+  <text x="200" y="140" text-anchor="middle" fill="#666" font-size="18">Sofa Image</text>
+</svg>
