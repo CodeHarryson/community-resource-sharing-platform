@@ -24,3 +24,7 @@ npm-debug.log*
 .parcel-cache/
 .svelte-kit/
 .docusaurus/
+
+#Documentation file
+docs/*
+
